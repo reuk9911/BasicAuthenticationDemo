@@ -20,6 +20,8 @@ namespace BasicAuthenticationDemo
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
 
+            //AddControllersWithViews
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -49,6 +51,7 @@ namespace BasicAuthenticationDemo
             app.UseAuthorization();
 
             app.MapControllers();
+
 
             app.Run();
         }
