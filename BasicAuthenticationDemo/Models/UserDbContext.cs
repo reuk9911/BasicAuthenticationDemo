@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace BasicAuthenticationDemo.Models
+namespace testITV.Models
 {
     public class UserDbContext : DbContext
     {

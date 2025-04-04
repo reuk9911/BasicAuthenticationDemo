@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace BasicAuthenticationDemo.Migrations
+namespace testITV.Migrations
 {
     /// <inheritdoc />
     public partial class Mig1 : Migration
