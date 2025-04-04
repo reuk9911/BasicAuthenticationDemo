@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BasicAuthenticationDemo.DTOs
+namespace testITV.DTOs
 {
     public class UserDTO
     {

@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 
-namespace BasicAuthenticationDemo.Models
+namespace testITV.Models
 {
     // A custom authentication handler that derives from AuthenticationHandler<TOptions>.
     // The generic type TOptions is the type of authentication options that the handler works with.

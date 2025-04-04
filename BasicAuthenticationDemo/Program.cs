@@ -1,8 +1,8 @@
-using BasicAuthenticationDemo.Models;
+using testITV.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
-namespace BasicAuthenticationDemo
+namespace testITV
 {
     public class Program
     {
@@ -19,6 +19,8 @@ namespace BasicAuthenticationDemo
                 // This will use the property names as defined in the C# model
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
+
+            //AddControllersWithViews
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -49,6 +51,7 @@ namespace BasicAuthenticationDemo
             app.UseAuthorization();
 
             app.MapControllers();
+
 
             app.Run();
         }
