@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace testITV.Models
+namespace BasicAuthenticationDemo.Models
 {
     public class UserDbContext : DbContext
     {
         public UserDbContext(DbContextOptions<UserDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Device> Devices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

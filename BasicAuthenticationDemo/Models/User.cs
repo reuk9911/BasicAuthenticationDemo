@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace testITV.Models
+namespace BasicAuthenticationDemo.Models
 {
     [Index(nameof(Email), Name = "Index_Email_Unique", IsUnique = true)]
     public class User

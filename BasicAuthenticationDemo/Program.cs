@@ -1,8 +1,8 @@
-using testITV.Models;
+using BasicAuthenticationDemo.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
-namespace testITV
+namespace BasicAuthenticationDemo
 {
     public class Program
     {
