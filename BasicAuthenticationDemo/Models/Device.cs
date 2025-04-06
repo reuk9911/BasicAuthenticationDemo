@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace testITV.Models
+namespace BasicAuthenticationDemo.Models
 {
     public class Device
     {

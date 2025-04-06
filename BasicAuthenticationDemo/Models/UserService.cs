@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace testITV.Models
+namespace BasicAuthenticationDemo.Models
 {
     public interface IUserService
     {

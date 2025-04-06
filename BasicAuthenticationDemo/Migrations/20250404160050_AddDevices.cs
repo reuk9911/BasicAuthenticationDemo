@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace testITV.Migrations
+namespace BasicAuthenticationDemo.Migrations
 {
     /// <inheritdoc />
     public partial class AddDevices : Migration

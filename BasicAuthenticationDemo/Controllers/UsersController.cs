@@ -1,9 +1,9 @@
-﻿using testITV.DTOs;
-using testITV.Models;
+﻿using BasicAuthenticationDemo.DTOs;
+using BasicAuthenticationDemo.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace testITV.Controllers
+namespace BasicAuthenticationDemo.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

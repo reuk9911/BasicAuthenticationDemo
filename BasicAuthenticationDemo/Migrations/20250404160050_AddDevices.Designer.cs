@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using testITV.Models;
+using BasicAuthenticationDemo.Models;
 
 #nullable disable
 
-namespace testITV.Migrations
+namespace BasicAuthenticationDemo.Migrations
 {
     [DbContext(typeof(UserDbContext))]
     [Migration("20250404160050_AddDevices")]
