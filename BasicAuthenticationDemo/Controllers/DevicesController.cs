@@ -6,104 +6,125 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BasicAuthenticationDemo.Models;
-using Microsoft.AspNetCore.Authorization;
+using BasicAuthenticationDemo.DTOs;
+using BasicAuthenticationDemo.Models.Interfaces;
 
 namespace BasicAuthenticationDemo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "BasicAuthentication")]
     public class DevicesController : ControllerBase
     {
-        private readonly UserDbContext _context;
+        private readonly IDeviceService _deviceService;
 
-        public DevicesController(UserDbContext context)
+        public DevicesController(IDeviceService deviceService)
         {
-            _context = context;
+            _deviceService = deviceService;
         }
 
         // GET: api/Devices
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Device>>> GetDevices()
+        public async Task<ActionResult<IEnumerable<DeviceDTO>>> Get()
         {
-            return await _context.Devices.ToListAsync();
+            var devices = await _deviceService.GetAllAsync();
+            var deviceDtos = devices.Select(u => new DeviceDTO
+            {
+                Id = u.Id,
+                Type = u.Type
+            }).ToList();
+
+            return Ok(deviceDtos);
         }
 
-        // GET: api/Devices/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Device>> GetDevice(int id)
-        {
-            var device = await _context.Devices.FindAsync(id);
+        #region Get
+        // GET: api/Device/1
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<DeviceDTO>> Get(int id)
+        //{
+        //    var device = await _deviceService.GetAsync(id);
+        //    if (device == null)
+        //        return NotFound();
 
-            if (device == null)
-            {
-                return NotFound();
-            }
+        //    var deviceDto = new DeviceDTO
+        //    {
+        //        Id = device.Id,
+        //        FirstName = device.FirstName,
+        //        LastName = device.LastName,
+        //        Email = device.Email,
+        //        Password = device.Password
+        //    };
 
-            return device;
-        }
-
-        // PUT: api/Devices/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDevice(int id, Device device)
-        {
-            if (id != device.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(device).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DeviceExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+        //    return Ok(deviceDto);
+        //}
+        #endregion
 
         // POST: api/Devices
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Device>> PostDevice(Device device)
+        public async Task<ActionResult<DeviceDTO>> Create([FromBody] DeviceDTO deviceDto)
         {
-            _context.Devices.Add(device);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return CreatedAtAction("GetDevice", new { id = device.Id }, device);
+            // Map DTO -> Entity
+            var device = new Device
+            {
+                Type = deviceDto.Type
+            };
+
+            device = await _deviceService.CreateAsync(device);
+
+            // Map Entity -> DTO
+            deviceDto.Id = device.Id;
+
+            return CreatedAtAction(nameof(Get), new { id = device.Id }, deviceDto);
         }
 
-        // DELETE: api/Devices/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDevice(int id)
-        {
-            var device = await _context.Devices.FindAsync(id);
-            if (device == null)
-            {
-                return NotFound();
-            }
+        #region Update
+        //// PUT: api/Device/1
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Update(int id, [FromBody] DeviceDTO deviceDto)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
 
-            _context.Devices.Remove(device);
-            await _context.SaveChangesAsync();
+        //    if (id != deviceDto.Id)
+        //        return BadRequest("ID in URL doesn't match ID in payload.");
+
+        //    // Map DTO -> Entity
+        //    var device = new Device
+        //    {
+        //        Id = deviceDto.Id,
+        //        Type = deviceDto.Type
+        //    };
+
+        //    var updated = await _deviceService.UpdateAsync(device);
+        //    if (!updated)
+        //        return NotFound();
+
+        //    return NoContent();
+        //}
+        #endregion
+        
+        // DELETE: api/Devices/1
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await _deviceService.DeleteAsync(id);
+            if (!deleted)
+                return NotFound();
 
             return NoContent();
         }
 
-        private bool DeviceExists(int id)
+        // DELETE: api/devices/type
+        [HttpDelete("type/{type}")]
+        public async Task<IActionResult> DeleteByType(string type)
         {
-            return _context.Devices.Any(e => e.Id == id);
+            var deleted = await _deviceService.DeleteByTypeAsync(type);
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
         }
     }
 }

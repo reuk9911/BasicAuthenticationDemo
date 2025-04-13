@@ -1,6 +1,7 @@
 using BasicAuthenticationDemo.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using BasicAuthenticationDemo.Models.Interfaces;
 
 namespace BasicAuthenticationDemo
 {
@@ -10,36 +11,34 @@ namespace BasicAuthenticationDemo
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Добавляем сервисы
 
-            //1. Ignore Camel Case with JSON Serialization
             builder.Services.AddControllers()
             .AddJsonOptions(options =>
             {
-                // This will use the property names as defined in the C# model
+                // Используем имена свойств, определенные в модели
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
 
-            //AddControllersWithViews
-
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            // http://localhost:12300/swagger
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // 2. Add DbContext
+            // Добавляем контекст БД
             builder.Services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString("EFCoreDBConnection")));
 
-            // 3. Register the UserService
+            // Регистрируем сервисы UserService, DeviceService
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IDeviceService, DeviceService>();
 
-            // 4. Add Authentication with our BasicAuthenticationHandler
+
+            // Добавляем аутентификацию через BasicAuthenticationHandler
             builder.Services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

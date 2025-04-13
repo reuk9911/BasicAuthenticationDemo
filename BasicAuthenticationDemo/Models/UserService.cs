@@ -1,44 +1,63 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using BasicAuthenticationDemo.Models.Interfaces;
 
 namespace BasicAuthenticationDemo.Models
 {
-    public interface IUserService
-    {
-        Task<IEnumerable<User>> GetUsersAsync();
-        Task<User?> GetUserByIdAsync(int id);
-        Task<User> CreateUserAsync(User user);
-        Task<bool> UpdateUserAsync(User user);
-        Task<bool> DeleteUserAsync(int id);
-        Task<User?> ValidateUserAsync(string email, string password);
-    }
+    
 
     public class UserService : IUserService
     {
+        /// <summary>
+        /// Контекст БД
+        /// </summary>
         private readonly UserDbContext _context;
 
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="context">Контекст БД</param>
         public UserService(UserDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<User>> GetUsersAsync()
+        /// <summary>
+        /// Возвращает коллекцию всех пользователей
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
             return await _context.Users.AsNoTracking().ToListAsync();
         }
 
-        public async Task<User?> GetUserByIdAsync(int id)
+        /// <summary>
+        /// Возвращает пользователя по id
+        /// </summary>
+        /// <param name="id">id пользователя</param>
+        /// <returns></returns>
+        public async Task<User?> GetAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task<User> CreateUserAsync(User user)
+        /// <summary>
+        /// Записывает нового пользователя в БД
+        /// </summary>
+        /// <param name="user">Новый пользователь</param>
+        /// <returns>Возвращает нового пользователя</returns>
+        public async Task<User> CreateAsync(User user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return user;
         }
 
-        public async Task<bool> UpdateUserAsync(User user)
+        /// <summary>
+        /// Обновляет данные пользователя
+        /// </summary>
+        /// <param name="user">Измененный пользователь</param>
+        /// <returns>true, если пользователь с данным id существует, false иначе</returns>
+        public async Task<bool> UpdateAsync(User user)
         {
             var existingUser = await _context.Users.FindAsync(user.Id);
             if (existingUser == null)
@@ -55,7 +74,12 @@ namespace BasicAuthenticationDemo.Models
             return true;
         }
 
-        public async Task<bool> DeleteUserAsync(int id)
+        /// <summary>
+        /// Удаляет пользователя по id
+        /// </summary>
+        /// <param name="id"> id пользователя</param>
+        /// <returns>true, если пользователь с данным id существует, false иначе</returns>
+        public async Task<bool> DeleteAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null) return false;
@@ -65,9 +89,14 @@ namespace BasicAuthenticationDemo.Models
             return true;
         }
 
-        public async Task<User?> ValidateUserAsync(string email, string password)
+        /// <summary>
+        /// Ищет пользователя по email и паролю 
+        /// </summary>
+        /// <param name="email">email пользователя</param>
+        /// <param name="password">пароль пользователя</param>
+        /// <returns>Пользователь с заданным email и паролем</returns>
+        public async Task<User?> ValidateAsync(string email, string password)
         {
-            // In real-world scenarios, you would compare hashed password to a hashed version in DB.
             return await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
         }
