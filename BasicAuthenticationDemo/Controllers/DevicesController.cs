@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BasicAuthenticationDemo.Models;
 using BasicAuthenticationDemo.DTOs;
+using BasicAuthenticationDemo.Models.Interfaces;
 
 namespace BasicAuthenticationDemo.Controllers
 {

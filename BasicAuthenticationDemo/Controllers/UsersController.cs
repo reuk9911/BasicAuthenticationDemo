@@ -2,6 +2,7 @@
 using BasicAuthenticationDemo.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using BasicAuthenticationDemo.Models.Interfaces;
 
 namespace BasicAuthenticationDemo.Controllers
 {

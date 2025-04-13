@@ -4,14 +4,15 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
+using BasicAuthenticationDemo.Models.Interfaces;
 
 namespace BasicAuthenticationDemo.Models
 {
-    // A custom authentication handler that derives from AuthenticationHandler<TOptions>.
-    // The generic type TOptions is the type of authentication options that the handler works with.
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        // A reference to the user service, which is used to validate user credentials.
+        /// <summary>
+        /// ссылка на UserService для проверки учетных данных
+        /// </summary>
         private readonly IUserService _userService;
 
         // Constructor for BasicAuthenticationHandler.
@@ -20,20 +21,21 @@ namespace BasicAuthenticationDemo.Models
         // - ILoggerFactory logger: Factory to create logger instances
         // - UrlEncoder encoder: Encodes URLs to ensure they are safe
         // - IUserService userService: The service used to validate user credentials.
+        
         public BasicAuthenticationHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
             IUserService userService)
-            //Passes options, logger, and encoder to the base class constructor
             : base(options, logger, encoder)
         {
-            // Assign the provided IUserService to the private field for use in authentication logic.
             _userService = userService;
         }
 
-        // The main method responsible for handling authentication.
-        // This method is overridden from AuthenticationHandler<TOptions> and called when a request needs to be authenticated.
+        /// <summary>
+        /// Метод для обработки аутентификации
+        /// </summary>
+        /// <returns></returns>
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             // Check if the Authorization header is present in the request.
