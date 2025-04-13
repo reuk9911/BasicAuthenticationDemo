@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BasicAuthenticationDemo.Models
+namespace BasicAuthenticationDemo.DTOs
 {
     public class DeviceDTO
     {

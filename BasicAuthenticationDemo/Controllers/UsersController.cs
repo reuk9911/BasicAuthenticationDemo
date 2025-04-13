@@ -21,7 +21,7 @@ namespace BasicAuthenticationDemo.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDTO>>> Get()
         {
-            var users = await _userService.GetUsersAsync();
+            var users = await _userService.GetAllAsync();
             var userDtos = users.Select(u => new UserDTO
             {
                 Id = u.Id,
@@ -38,7 +38,7 @@ namespace BasicAuthenticationDemo.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDTO>> Get(int id)
         {
-            var user = await _userService.GetUserByIdAsync(id);
+            var user = await _userService.GetAsync(id);
             if (user == null)
                 return NotFound();
 
@@ -70,7 +70,7 @@ namespace BasicAuthenticationDemo.Controllers
                 Password = userDto.Password
             };
 
-            user = await _userService.CreateUserAsync(user);
+            user = await _userService.CreateAsync(user);
 
             // Map Entity -> DTO
             userDto.Id = user.Id;
@@ -98,7 +98,7 @@ namespace BasicAuthenticationDemo.Controllers
                 Password = userDto.Password
             };
 
-            var updated = await _userService.UpdateUserAsync(user);
+            var updated = await _userService.UpdateAsync(user);
             if (!updated)
                 return NotFound();
 
@@ -109,7 +109,7 @@ namespace BasicAuthenticationDemo.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleted = await _userService.DeleteUserAsync(id);
+            var deleted = await _userService.DeleteAsync(id);
             if (!deleted)
                 return NotFound();
 

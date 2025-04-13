@@ -78,7 +78,7 @@ namespace BasicAuthenticationDemo.Models
             try
             {
                 // Use the IUserService to validate the user credentials.
-                var user = await _userService.ValidateUserAsync(email, password);
+                var user = await _userService.ValidateAsync(email, password);
                 if (user == null)
                 {
                     // If no user matches the provided credentials, fail authentication.

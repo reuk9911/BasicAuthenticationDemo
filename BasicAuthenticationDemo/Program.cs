@@ -20,7 +20,7 @@ namespace BasicAuthenticationDemo
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
 
-            //AddControllersWithViews
+
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -32,6 +32,8 @@ namespace BasicAuthenticationDemo
 
             // 3. Register the UserService
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IDeviceService, DeviceService>();
+
 
             // 4. Add Authentication with our BasicAuthenticationHandler
             builder.Services.AddAuthentication("BasicAuthentication")
